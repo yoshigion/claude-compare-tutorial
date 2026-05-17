@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Manager</title>
+  <!-- Fix #3: Apply saved theme before first paint to eliminate FOUC -->
+  <script>
+    (function () {
+      if (localStorage.getItem('theme') === 'dark') {
+        document.documentElement.dataset.theme = 'dark';
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Fix #5: Use <main> instead of <div role="main"> -->
+  <main class="app">
+    <header class="app-header">
+      <div class="header-top">
+        <h1 class="app-title">Task Manager</h1>
+        <button
+          id="theme-toggle"
+          class="theme-toggle"
+          aria-label="Switch to dark mode"
+          aria-pressed="false"
+          title="Toggle dark mode"
+        >
+          <span class="theme-icon" aria-hidden="true">🌙</span>
+        </button>
+      </div>
+      <p class="app-subtitle" id="task-summary" aria-live="polite">0 tasks remaining</p>
+    </header>
+
+    <section class="input-section" aria-label="Add a new task">
+      <form class="task-form" id="task-form" novalidate>
+        <!-- Fix #6: Keep only <label for>, remove redundant aria-label from input -->
+        <label for="task-input" class="visually-hidden">New task description</label>
+        <input
+          type="text"
+          id="task-input"
+          class="task-input"
+          placeholder="What needs to be done?"
+          autocomplete="off"
+          maxlength="200"
+          required
+        />
+        <button type="submit" class="btn btn-primary" aria-label="Add task">
+          Add
+        </button>
+      </form>
+    </section>
+
+    <nav class="filter-nav" aria-label="Filter tasks">
+      <button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
+      <button class="filter-btn" data-filter="active" aria-pressed="false">Active</button>
+      <button class="filter-btn" data-filter="completed" aria-pressed="false">Completed</button>
+    </nav>
+
+    <section aria-label="Task list">
+      <ul class="task-list" id="task-list" role="list">
+        <!-- Tasks are rendered here by app.js -->
+      </ul>
+      <p class="empty-state" id="empty-state" hidden>No tasks to show.</p>
+    </section>
+
+    <footer class="app-footer" id="footer-actions">
+      <button class="btn btn-ghost" id="clear-completed" hidden>
+        Clear completed
+      </button>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
